@@ -1,0 +1,35 @@
+{
+  "name": "pixdb",
+  "version": "1.0.0",
+  "description": "Promise-based indexedDB wrapper",
+  "type": "module",
+  "browser": "./dist/pixdb.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "node ./esbuild.config.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/craigbuckler/pixdb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/craigbuckler/pixdb/issues"
+  },
+  "homepage": "https://github.com/craigbuckler/pixdb",
+  "keywords": [
+    "client",
+    "browser",
+    "indexeddb",
+    "database",
+    "promise",
+    "wrapper"
+  ],
+  "author": "Craig Buckler",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.19.2"
+  }
+}
