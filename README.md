@@ -148,6 +148,11 @@ await db.close();
 
 ## API reference
 
+Most `PixDB` object methods:
+
+* use a single object parameter with specific properties, and
+* return a Promise which resolves on success or rejects on failure.
+
 The `PixDB` constructor parameters:
 
 | name | type | description |
@@ -178,8 +183,6 @@ const db = await new PixDB('db', 1, (init, oldVersion, newVersion) => {
 
 });
 ```
-
-Most object methods accept an object with specific properties and return a Promise which resolves on success or rejects on failure.
 
 
 ### .isConnected
@@ -246,7 +249,7 @@ await db.delete({ store: 'state', key: 'a' });
 ```
 
 
-### clear( paramObject )
+### .clear( paramObject )
 
 Delete all records in an object store.
 
