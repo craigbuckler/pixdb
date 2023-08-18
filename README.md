@@ -182,22 +182,22 @@ const db = await new PixDB('db', 1, (init, oldVersion, newVersion) => {
 Most object methods accept an object with specific properties and return a Promise which resolves on success or rejects on failure.
 
 
-### `.isConnected` property
+### .isConnected
 
 Returns `true` when the database connection is active.
 
 
-### `.name` property
+### .name
 
 Returns the database name string (or `null` if the database is dropped).
 
 
-### `.version` property
+### .version
 
 Returns the database version number (or `null` if the database is dropped).
 
 
-### `.add( paramObject )`
+### .add( paramObject )
 
 Add one or more new records but does not permit overwrites.
 
@@ -223,12 +223,12 @@ await db.add({ store: 'state', item: [
 ```
 
 
-### `.put( paramObject )`
+### .put( paramObject )
 
 Identical to [.add()](#add-paramobject) except overwrites are permitted.
 
 
-### `.delete( paramObject )`
+### .delete( paramObject )
 
 Delete a record in an object store by key name.
 
@@ -246,7 +246,7 @@ await db.delete({ store: 'state', key: 'a' });
 ```
 
 
-### `.clear( paramObject )`
+### clear( paramObject )
 
 Delete all records in an object store.
 
@@ -263,7 +263,7 @@ await db.clear({ store: 'state' });
 ```
 
 
-### `.count( paramObject )`
+### .count( paramObject )
 
 Count records in an object store or index.
 
@@ -287,7 +287,7 @@ await db.count({ store: 'state', lowerBound: 'x' });
 ```
 
 
-### `.get( paramObject )`
+### .get( paramObject )
 
 Fetches a single record referenced by key or index key.
 
@@ -306,7 +306,7 @@ const a = await db.get({ store: 'state', key: 'a'});
 ```
 
 
-### `.getAll( paramObject )`
+### .getAll( paramObject )
 
 Fetches an array of records referenced between optional lower and upper boundaries on a store or index.
 
@@ -327,7 +327,7 @@ const all = await db.getAll({ store: 'state', lowerBound: 'a', upperBound: 'z', 
 ```
 
 
-### `.getAllKeys( paramObject )`
+### .getAllKeys( paramObject )
 
 Fetches an array of record keys referenced between optional lower and upper boundaries on a store or index.
 
@@ -348,7 +348,7 @@ const allKeys = await db.getAllKeys({ store: 'state' });
 ```
 
 
-### `.getCursor( paramObject )`
+### .getCursor( paramObject )
 
 Fetches all records in a store or index range and pass each to a processing callback function.
 
@@ -373,7 +373,7 @@ await db.getCursor({
 ```
 
 
-### `.close()`
+### .close()
 
 Close the database connection. Nothing is returned.
 
@@ -382,7 +382,7 @@ db.close();
 ```
 
 
-### `.connect()`
+### .connect()
 
 Reconnect to database after `.close()` has closed a connection. Returns a Promise which resolves/rejects when the database connection is established.
 
@@ -391,7 +391,7 @@ await db.connect();
 ```
 
 
-### `.drop()`
+### .drop()
 
 Delete the whole database, its stores, indexes, and data. Returns a Promise which resolves/rejects when database has been deleted.
 
