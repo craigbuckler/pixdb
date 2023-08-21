@@ -249,6 +249,26 @@ await db.delete({ store: 'state', key: 'a' });
 ```
 
 
+### .deleteAll( paramObject )
+
+Delete all records referenced between optional lower and upper boundaries on a store or index.
+
+`paramObject` properties:
+
+| property | type | description |
+|-|-|-|
+| `store` | string | object store (required) |
+| `index` | string | object store index |
+| `lowerBound` | * | lower key value |
+| `upperBound` | * | upper key value |
+
+Returns a Promise which resolves/rejects all records are deleted.
+
+```js
+await db.deleteAll({ store: 'state', lowerBound: 'x', upperBound: 'z' });
+```
+
+
 ### .clear( paramObject )
 
 Delete all records in an object store.

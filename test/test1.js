@@ -96,10 +96,24 @@ log(`after one delete - records in '${ store }': ${ count }`);
 console.assert(count === 6, `'${ store }' does not have 6 records`);
 
 // ----------------
-// add record back - should pass
+// delete multiple records
+log('\ndelete a to c:', await db.deleteAll({ store, lowerBound: 'a', upperBound: 'c'  }));
+
+// ----------------
+// count records
+count = await db.count({ store });
+log(`after three deletes - records in '${ store }': ${ count }`);
+console.assert(count === 4, `'${ store }' does not have 4 records`);
+
+// ----------------
+// add records back - should pass
 try {
-  await db.add({ store, item: { name: 'a', value: 1, update, expire: addDay(7, update) } });
-  log(`record 'a' was added to '${ store }'`);
+  await db.add({ store, item: [
+    { name: 'a', value: 1, update, expire: addDay(7, update) },
+    { name: 'b', value: 'two', update, expire: addDay(6, update) },
+    { name: 'c', value: [3,'three','tres'], update, expire: addDay(5, update) }
+  ] });
+  log(`\n3 records were added to '${ store }'`);
 }
 catch (e) {
   console.assert(false, `'${ store }' add should not have failed`);
@@ -135,7 +149,7 @@ console.assert(rec.length === 7, `'${ store }' did not return 7 records`);
 // return range of records
 log('\nrange of records from b to e:');
 
-rec = await db.getAll({ store, lowerBound: 'b', upperBound: 'e' })
+rec = await db.getAll({ store, lowerBound: 'b', upperBound: 'e' });
 rec.forEach( (r, i) => log(`[${ i }]:`, r.name, '=', r.value) );
 console.assert(rec.length === 4, `'${ store }' range did not return 4 records`);
 
