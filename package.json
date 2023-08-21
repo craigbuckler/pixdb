@@ -1,6 +1,6 @@
 {
   "name": "pixdb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Promise-based indexedDB wrapper",
   "type": "module",
   "browser": "./dist/pixdb.js",

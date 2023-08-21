@@ -161,14 +161,10 @@ export class PixDB {
 
 
   /**
-   * @typedef addParams
-   * @type {object}
-   * @property {string} store - object store (required)
-   * @property {object|array} item - single record or an array of records to add
-   */
-  /**
    * add new records (overwrites not permitted)
-   * @param {addParams} param
+   * @param {cbject} param
+   * @param {string} param.store - object store (required)
+   * @param {object|array} param.item - single record or an array of records to add
    * @return {Promise} - resolves/rejects when all records have been written
    * @example
    * // add single record
@@ -184,7 +180,9 @@ export class PixDB {
 
   /**
    * add/update records (overwrites permitted)
-   * @param {addParams} param
+   * @param {cbject} param
+   * @param {string} param.store - object store (required)
+   * @param {object|array} param.item - single record or an array of records to add
    * @return {Promise} - resolves/rejects when all records have been written
    * @example
    * // add/update single record
@@ -226,16 +224,12 @@ export class PixDB {
 
 
   /**
-   * @typedef countParams
-   * @type {object}
-   * @property {string} store - object store (required)
-   * @property {string} index - object store index
-   * @property {*} lowerBound - lower key value
-   * @property {*} upperBound - upper key value
-   */
-  /**
    * count items in an object store/index
-   * @param {countParams} param -
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {string} param.index - object store index
+   * @param {*} param.lowerBound - lower key value
+   * @param {*} param.upperBound - upper key value
    * @returns {Promise} - resolves/rejects when number of records is known
    * @example
    * console.log(`records in 'state' store: ${ await db.count({ store: 'state' }) }`);
@@ -255,15 +249,11 @@ export class PixDB {
 
 
   /**
-   * @typedef getParams
-   * @type {object}
-   * @property {string} store - object store (required)
-   * @property {string} index - object store index
-   * @property {*} key - key value to find (required)
-   */
-  /**
    * return a single item by key
-   * @param {getParams} param
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {string} param.index - object store index
+   * @param {*} key - key value to find (required)
    * @returns {Promise} - resolves/rejects when record is found or not found
    * @example
    * const a = await db.get({ store: 'state', key: 'a'});
@@ -281,17 +271,13 @@ export class PixDB {
 
 
   /**
-   * @typedef allParams
-   * @type {object}
-   * @property {string} store - object store (required)
-   * @property {string} index - object store index
-   * @property {*} lowerBound - lower key value
-   * @property {*} upperBound - upper key value
-   * @property {number} count - maximum number of records to return
-   */
-  /**
    * returns an array of records in a range
-   * @param {allParams} param
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {string} param.index - object store index
+   * @param {*} param.lowerBound - lower key value
+   * @param {*} param.upperBound - upper key value
+   * @param {number} param.count - maximum number of records to return
    * @returns {Promise} - resolves/rejects when an array of records is found
    * @example
    * const all = await db.getAll({ store: 'state', lowerBound: 'a', upperBound: 'z' });
@@ -307,9 +293,15 @@ export class PixDB {
 
   }
 
+
   /**
    * returns an array of key values in a range
-   * @param {allParams} param
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {string} param.index - object store index
+   * @param {*} param.lowerBound - lower key value
+   * @param {*} param.upperBound - upper key value
+   * @param {number} param.count - maximum number of records to return
    * @returns {Promise} - resolves/rejects when an array of keys is found
    * @example
    * const allKeys = await db.getAllKeys({ store: 'state' });
@@ -325,15 +317,12 @@ export class PixDB {
 
   }
 
+
   /**
-   * @typedef deleteParams
-   * @type {object}
-   * @property {string} store - object store (required)
-   * @property {*} key - key value (required)
-   */
-  /**
-   * deletes a record
-   * @param {deleteParams} param
+   * delete a record
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {*} key - key value to find (required)
    * @returns {Promise} - resolves/rejects when record is deleted
    * @example
    * await db.delete({ store: 'state', key: 'a' });
@@ -344,19 +333,39 @@ export class PixDB {
       store,
       null,
       'delete',
-      key
+      [ key ]
     );
 
   }
 
+
   /**
-   * @typedef storeParams
-   * @type {object}
-   * @property {string} store - object store (required)
+   * delete all records in a range
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {string} param.index - object store index
+   * @param {*} param.lowerBound - lower key value
+   * @param {*} param.upperBound - upper key value
+   * @returns {Promise} - resolves/rejects when all records are deleted
+   * @example
+   * await db.deleteAll({ store: 'state', lowerBound: 'x', upperBound: 'z' });
    */
+  deleteAll({ store, index, lowerBound, upperBound } = {}) {
+
+    return this.#exec(
+      store,
+      index,
+      'delete',
+      [ this.#bound(lowerBound, upperBound) ]
+    );
+
+  }
+
+
   /**
    * deletes all records in a store
-   * @param {storeParams} param
+   * @param {object} param
+   * @param {string} param.store - object store (required)
    * @returns {Promise} - resolves/rejects when all records are deleted
    * @example
    * await db.clear({ store: 'state' });
@@ -373,18 +382,14 @@ export class PixDB {
 
 
   /**
-   * @typedef cursorParams
-   * @type {object}
-   * @property {string} store - object store (required)
-   * @property {string} index - object store index
-   * @property {*} lowerBound - lower key value
-   * @property {*} upperBound - upper key value
-   * @property {string} direction - direction to travel (next, nextunique, prev, prevunique)
-   * @property {function} callback - cursor is passed to this synchronous function. It can return a positive integer to jump forward N records
-   */
-  /**
    * fetch all records in a range and pass each to a processing function
-   * @param {cursorParams} param
+   * @param {object} param
+   * @param {string} param.store - object store (required)
+   * @param {string} param.index - object store index
+   * @param {*} param.lowerBound - lower key value
+   * @param {*} param.upperBound - upper key value
+   * @param {string} param.direction - direction to travel (next, nextunique, prev, prevunique)
+   * @param {function} param.callback - cursor is passed to this synchronous function. It can return a positive integer to jump forward N records
    * @returns {Promise} - resolves/rejects once all records have been processed
    * @example
    * await db.getCursor({
@@ -444,17 +449,14 @@ export class PixDB {
 
 
   /**
-   * @typedef storeObject
-   * @type {object}
-   * @property {IDBTransaction} transaction - transaction object
-   * @property {*} store - a IDBObjectStore or IDBIndex object
-  /**
    * PRIVATE: return new transaction and object store/index
    * @private
    * @param {string} storeName - store to use (required)
    * @param {string} indexName - index to use (optional)
    * @param {boolean} write - true for write access, false for read-only (the default)
-   * @return {storeObject} - transaction and store/index objects
+   * @return {object} ret - transaction and store/index objects
+   * @return {IDBTransaction} ret.transaction - transaction object
+   * @return {*} ret.store - a IDBObjectStore or IDBIndex object
    */
   #query(storeName, indexName, write) {
 
