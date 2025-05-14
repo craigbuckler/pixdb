@@ -1,6 +1,6 @@
 {
   "name": "pixdb",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Promise-based indexedDB wrapper",
   "type": "module",
   "browser": "./dist/pixdb.js",
@@ -28,8 +28,12 @@
     "wrapper"
   ],
   "author": "Craig Buckler",
+    "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/craigbuckler"
+  },
   "license": "MIT",
   "devDependencies": {
-    "esbuild": "^0.19.2"
+    "esbuild": "^0.25.4"
   }
 }
