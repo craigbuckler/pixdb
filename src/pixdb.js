@@ -15,7 +15,7 @@ export class PixDB {
    * @param {function} dbUpgradeFn - database upgrade function (passed init, oldVersion, newVersion)
    * @return {Promise} - resolves/rejects when database connection is established
    * @example
-   * const db = await new ClientDB('test', 1, (init, oldVersion, newVersion) => {
+   * const db = await new PixDB('test', 1, (init, oldVersion, newVersion) => {
    *   console.log(`upgrading database from ${ oldVersion } to ${ newVersion }`);
    *   switch (oldVersion) {
    *     case 0: { init.createObjectStore('state', { keyPath: 'name' }); }
@@ -409,7 +409,7 @@ export class PixDB {
 
       // run callback with current value
       request.onsuccess = () => {
-        let cursor = request.result;
+        const cursor = request.result;
         if (cursor) {
           cursor.advance( (callback && callback(cursor)) || 1 );
         }

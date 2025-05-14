@@ -7,7 +7,7 @@ const
   store = 'state',
   update = new Date();
 
-let rec, count, upperBound;
+let rec, count;
 
 // ############# start tests #############
 
@@ -71,7 +71,7 @@ try {
   console.assert(false, `'${ store }' overwrite should have failed`);
 }
 catch (e) {
-  log(`record 'a' was not added to '${ store }' because the record exists`);
+  log(`record 'a' was not added to '${ store }' because the record exists\n${e}`);
 }
 
 // ----------------
@@ -81,7 +81,7 @@ try {
   log(`record 'a' was updated in '${ store }'`);
 }
 catch (e) {
-  console.assert(false, `'${ store }' put should not have failed`);
+  console.assert(false, `'${ store }' put should not have failed\n${e}`);
 }
 
 // ----------------
@@ -116,7 +116,7 @@ try {
   log(`\n3 records were added to '${ store }'`);
 }
 catch (e) {
-  console.assert(false, `'${ store }' add should not have failed`);
+  console.assert(false, `'${ store }' add should not have failed\n${e}`);
 }
 
 // ----------------
@@ -162,8 +162,9 @@ console.assert(rec.length === 7, `'${ store }' did not return 7 keys`);
 
 // ----------------
 // get range of records by index
-const exp = 3;
-upperBound = addDay(exp, update);
+const
+  exp = 3,
+  upperBound = addDay(exp, update);
 log(`\nindexed records to expire before ${ upperBound }:`);
 rec = await db.getAll({ store, index: 'expireIdx', upperBound });
 rec.forEach( (r, i) => log(`[${ i }]:`, r.name, '=', r.value) );
@@ -174,7 +175,7 @@ console.assert(rec.length === exp, `'${ store }' range did not return ${ exp } r
 log('\ncursor of indexed records ordered by expiry:');
 let lastName = 'zzz';
 await db.getCursor({ store, index: 'expireIdx', callback: cursor => {
-  let r = cursor.value;
+  const r = cursor.value;
   log(r.expire, ':', r.name, '=', r.value);
   console.assert(lastName >= r.name, `incorrect order in '${ store }' expire index`);
   lastName = r.name;

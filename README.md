@@ -25,13 +25,14 @@ npm install pixdb
 then import the module locally *(path resolution will depend on the bundler)*:
 
 ```js
-import { PixDB } from './node_modules/pixdb/dist/pixdb.js';
+import { PixDB } from 'pixdb';
+// or perhaps: import { PixDB } from './node_modules/pixdb/dist/pixdb.js';
 ```
 
 
 ## Examples
 
-Most methods are asynchronous and Promise-based so you must use `async`/`await` or `.then`.
+Most methods are asynchronous and Promise-based so you must use `async`/`await` or `.then` chains.
 
 Initialize a new connection with a database name, version, and an optional upgrade function. The upgrade function receives the connection, the old version number, and the new version number so it can create object stores and indexes:
 
@@ -53,7 +54,7 @@ const db = await new PixDB('db', 1, (init, oldVersion, newVersion) => {
 });
 ```
 
-This creates an object store named `state` which with the key on the `name` property and an index named `updateIdx` on the `update` property.
+This creates an object store named `state` with a key on the `name` property and an index named `updateIdx` on the `update` property.
 
 You can check the connection, name, and version:
 
@@ -98,7 +99,7 @@ Get a single value by its key:
 await db.get({ store: 'state', key: 'a'});
 ```
 
-Get an array of all values with a `lowerBound`, `upperBound`, and maximum `count` of records:
+Get an array of all values with a `lowerBound`, `upperBound`, and a maximum `count` of records:
 
 ```js
 // [
@@ -121,7 +122,7 @@ Use a cursor to iterate through each record one at a time and pass the value to 
 ```js
 await db.getCursor({
   store: 'state',
-  callback: cursor => console.log(cursor.value)
+  callback: cursor => console.log( cursor.value )
 });
 ```
 
@@ -161,9 +162,9 @@ The `PixDB` constructor parameters:
 | `version` | number | version number |
 | `upgrade` | function | upgrade function |
 
-The `upgrade` function is passed the database connection, oldVersion, and newVersion.
+The `upgrade` function receives the database connection, oldVersion, and newVersion.
 
-The constructor returns a Promise which resolves/rejects when a database connection is established so `await` must be used:
+The constructor returns a Promise which resolves/rejects when the database connection is established, so `await` can be used:
 
 Example:
 
@@ -192,12 +193,12 @@ Returns `true` when the database connection is active.
 
 ### .name
 
-Returns the database name string (or `null` if the database is dropped).
+Returns the database name string (or `null` if the database has been dropped).
 
 
 ### .version
 
-Returns the database version number (or `null` if the database is dropped).
+Returns the database version number (or `null` if the database has been dropped).
 
 
 ### .add( paramObject )
@@ -211,7 +212,7 @@ Add one or more new records but does not permit overwrites.
 | `store` | string | object store (required) |
 | `item` | object \| array | single record or an array of records to add |
 
-Returns a Promise which resolves/rejects when all records have been written.
+Returns a Promise which resolves/rejects when all records are written.
 
 ```js
 // add one record
@@ -299,7 +300,7 @@ Count records in an object store or index.
 | `lowerBound` | * | lower key value |
 | `upperBound` | * | upper key value |
 
-Returns a Promise which resolves/rejects when number of records is known.
+Returns a Promise which resolves/rejects when number of records is determined.
 
 ```js
 // number of records in 'state'
